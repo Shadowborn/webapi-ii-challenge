@@ -13,9 +13,17 @@ module.exports = {
   insertComment,
 };
 
-function find() {
-  return db('posts');
-}
+function find(query) {
+    const { page = 1, pagesize = 2, sortby = 'id', sortdir = 'asc' } = query;
+    const offset = pagesize * (page - 1);
+  
+    let rows = db('posts')
+      .orderBy(sortby, sortdir)
+      .limit(pagesize)
+      .offset(offset);
+  
+    return rows;
+  }
 
 function findById(id) {
   return db('posts').where({ id: Number(id) });
@@ -40,19 +48,19 @@ function remove(id) {
 }
 
 function findPostComments(postId) {
-  return db('comments')
+  return db('contents')
     .join('posts', 'posts.id', 'post_id')
     .select('comments.*', 'title as post')
     .where('post_id', postId);
 }
 
 function findCommentById(id) {
-  return db('comments')
+  return db('contents')
     .join('posts', 'posts.id', 'post_id')
-    .select('comments.*', 'title as post')
-    .where('comments.id', id);
+    .select('contents.*', 'title as post')
+    .where('contents.id', id);
 }
 
 function insertComment(comment) {
-  return db('comments').insert(comment).then(ids => ({ id: ids[0] }));
+  return db('contents').insert(comment).then(ids => ({ id: ids[0] }));
 }

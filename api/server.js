@@ -1,6 +1,6 @@
 const express = require('express');
 
-const hubsRouter = require('../hubs/hubs-router.js');
+const postsRouter = require('../posts/posts-router.js');
 
 const server = express();
 
@@ -8,15 +8,15 @@ server.use(express.json());
 
 server.get('/', (req, res) => {
   res.send(`
-    <h2>Lambda Hubs API</h>
-    <p>Welcome to the Lambda Hubs API</p>
+    <h2>Lambda posts API</h>
+    <p>Welcome to the Lambda posts API</p>
   `);
 });
 
-server.use('/api/hubs', hubsRouter);
+server.use('/api/posts', postsRouter);
 
-// add an endpoint that returns all the messages for a hub
-// add an endpoint for adding new message to a hub
+// add an endpoint that returns all the messages for a post
+// add an endpoint for adding new message to a post
 
 // export default server // ES2015 modules
 module.exports = server; // <<<<<<<<<<<<<<<<< add this line
