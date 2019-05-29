@@ -50,10 +50,22 @@ router.post('/', async (req, res) => {
     // log error to database
     console.log(error);
     res.status(500).json({
-      message: 'Something wrong with server',
+      message: 'There was an error while saving the post to the database',
     });
   }
 });
+
+router.post('/:id/comments', async (req, res) => {
+  try {
+    if(!req.params.id) {
+      res.status(404).json({message: 'The post with the specified ID does not exist.'});
+    }
+    const comment = await Posts.insertComment(req.body);
+    res.status(201).json(comment);
+  } catch {
+    res.status(500).json({message: 'There was an error while saving the comment to the database'})
+  }
+})
 
 router.delete('/:id', async (req, res) => {
   try {
